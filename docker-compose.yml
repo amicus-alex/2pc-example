@@ -1,0 +1,55 @@
+version: '3.8'
+
+services:
+  coordinator:
+    build:
+      context: ./coordinator
+    ports:
+      - "8080:8080"
+    depends_on:
+      - customer
+      - order
+
+  customer:
+    build:
+      context: ./customer
+    ports:
+      - "8081:8081"
+    depends_on:
+      - customerdb
+
+  order:
+    build:
+      context: ./order
+    ports:
+      - "8082:8082"
+    depends_on:
+      - orderdb
+
+  customerdb:
+    image: postgres:13
+    restart: always
+    environment:
+      POSTGRES_USER: youruser
+      POSTGRES_PASSWORD: yourpassword
+      POSTGRES_DB: yourdb
+    ports:
+      - "5432:5432"
+    volumes:
+      - c-data:/var/lib/postgresql/data
+
+  orderdb:
+    image: postgres:13
+    restart: always
+    environment:
+      POSTGRES_USER: youruser
+      POSTGRES_PASSWORD: yourpassword
+      POSTGRES_DB: yourdb
+    ports:
+      - "5433:5432"
+    volumes:
+      - o-data:/var/lib/postgresql/data
+
+volumes:
+  c-data:
+  o-data:
