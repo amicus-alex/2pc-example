@@ -50,7 +50,7 @@ func (c *Coordinator) prepare(ctx context.Context, req DT.OrderRequest) []repo2.
 	wg.Add(1)
 	go func() {
 		defer wg.Done()
-		results <- c.client.customerTx.Prepare(ctx, req.UserId, req.Amount*10000)
+		results <- c.client.customerTx.Prepare(ctx, req.UserId, req.Amount)
 	}()
 	go func() {
 		wg.Wait()
